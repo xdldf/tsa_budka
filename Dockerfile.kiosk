@@ -1,0 +1,50 @@
+# syntax=docker/dockerfile:1
+# All-in-one kiosk image: FastAPI backend + Next.js frontend + Electron window.
+# The container renders on the host X server (DISPLAY + /tmp/.X11-unix).
+
+# ---------- Frontend build ----------
+FROM node:22-bookworm-slim AS frontend-build
+WORKDIR /app/frontend
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci
+COPY frontend/ ./
+ENV NEXT_PUBLIC_API_URL=http://localhost:8000
+RUN npm run build
+
+# ---------- Runtime ----------
+FROM node:22-bookworm-slim
+
+# Python for the backend + runtime libraries required by Electron/Chromium.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 python3-venv python3-pip \
+    libgtk-3-0 libnotify4 libnss3 libxss1 libxtst6 xdg-utils \
+    libatspi2.0-0 libdrm2 libgbm1 libxcb-dri3-0 libasound2 libcups2 \
+    libxrandr2 libxkbcommon0 libpango-1.0-0 libcairo2 libx11-xcb1 \
+    libxcomposite1 libxdamage1 libxfixes3 \
+    libgl1 libegl1 libgl1-mesa-dri mesa-utils libxext6 libsm6 libice6 dbus-x11 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Backend
+RUN python3 -m venv /opt/venv
+COPY backend/requirements.txt /app/backend/requirements.txt
+RUN /opt/venv/bin/pip install --no-cache-dir -r /app/backend/requirements.txt
+COPY backend/app /app/backend/app
+COPY booth.config.toml /app/booth.config.toml
+COPY booth.config.toml /app/backend/booth.config.toml
+
+# Frontend (built app + Electron)
+COPY --from=frontend-build /app/frontend /app/frontend
+# GitHub is unreachable from the build network, so the Electron binary
+# (downloaded on the host by `npm install`) is baked in from the build context.
+COPY frontend/node_modules/electron/dist /app/frontend/node_modules/electron/dist
+COPY frontend/node_modules/electron/path.txt /app/frontend/node_modules/electron/path.txt
+
+COPY kiosk-entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+ENV IMAGE_PROVIDER=demo \
+    OPENROUTER_MODEL=openai/gpt-image-2 \
+    STORAGE_DIR=/tmp/ai-photo-booth
+
+EXPOSE 8000 3000
+CMD ["/app/entrypoint.sh"]

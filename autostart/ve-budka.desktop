@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Фотобудка
+Comment=Запуск фото-будки (backend + киоск)
+Exec=/home/user/booth-autostart.sh
+Icon=camera-photo
+Terminal=false
+X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-delay=5

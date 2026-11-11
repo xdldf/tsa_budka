@@ -9,7 +9,7 @@ import unittest
 
 from PIL import Image
 
-from print_strip import ROOT, single_cut_job
+from tools.print_single_strip import ROOT, single_cut_job
 
 
 class StripTests(unittest.TestCase):
@@ -33,7 +33,7 @@ class StripTests(unittest.TestCase):
 
     def invoke(self, photos):
         return subprocess.run(
-            [sys.executable, str(ROOT / "print_strip.py"), *photos,
+            [sys.executable, str(ROOT / "print_single_strip.py"), *photos,
              "--preview-only", "--output-dir", str(self.folder / "results")],
             env=self.env, capture_output=True, text=True,
         )

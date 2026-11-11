@@ -1,0 +1,46 @@
+services:
+  backend:
+    build: ./backend
+    env_file: ./backend/.env.example
+    ports:
+      - "8000:8000"
+    volumes:
+      - photo-booth-images:/tmp/ai-photo-booth
+      - photo-booth-saved:/app/backend/saved_photos
+      - ./booth.config.toml:/app/booth.config.toml:ro
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+  frontend:
+    build: ./frontend
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+  kiosk:
+    build:
+      context: .
+      dockerfile: Dockerfile.kiosk
+    environment:
+      DISPLAY: ${DISPLAY:-:0}
+      IMAGE_PROVIDER: ${IMAGE_PROVIDER:-demo}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      OPENROUTER_MODEL: ${OPENROUTER_MODEL:-openai/gpt-image-2}
+      SAVED_DIR: ${SAVED_DIR:-/app/backend/saved_photos}
+      ELECTRON_EXTRA_FLAGS: ${ELECTRON_EXTRA_FLAGS:-}
+    devices:
+      - /dev/video0:/dev/video0
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - photo-booth-images:/tmp/ai-photo-booth
+      - photo-booth-saved:/app/backend/saved_photos
+      - ./booth.config.toml:/app/booth.config.toml:ro
+      - ./booth.config.toml:/app/backend/booth.config.toml:ro
+volumes:
+  photo-booth-images:
+  photo-booth-saved:
