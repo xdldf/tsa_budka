@@ -93,6 +93,8 @@ OUTFIT REFERENCE(S) - TRADITIONAL COSTUME
 
 The outfit reference image(s) define ONLY the clothing.
 
+For all Yakut/Sakha costume styles, treat the supplied VEF_budka_v2 outfit image as a literal garment reference: reproduce that exact costume and its northern details, not a generic approximation of a Yakut costume.
+
 If a female outfit reference is provided, use it for every woman/female-presenting person.
 
 If a male outfit reference is provided, use it for every man/male-presenting person.
