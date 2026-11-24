@@ -46,7 +46,10 @@ class LPPrintService(PrintService):
             margin = 1.0 + overscan
             if margin <= 0:
                 return page
-            content = page.resize((round(page.width * margin), round(page.height * margin)), Image.LANCZOS)
+            # Portrait 10x15 prints need a slimmer vertical frame: keep the
+            # 2 mm side safety margin, but use about 1 mm at top and bottom.
+            vertical_margin = 1.0 + overscan / 2 if page.height > page.width else margin
+            content = page.resize((round(page.width * margin), round(page.height * vertical_margin)), Image.LANCZOS)
             canvas = Image.new("RGB", page.size, "white")
             canvas.paste(content, ((page.width - content.width) // 2, (page.height - content.height) // 2))
             return canvas
