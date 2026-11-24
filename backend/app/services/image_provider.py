@@ -832,7 +832,14 @@ Make the jewelry fit naturally and remain sharply visible. Do not add people, te
                     {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{reference_b64}"}},
                 )
             if style.style_reference_image:
-                if style.id.startswith("postcard-"):
+                if style.id == "postcard-soviet":
+                    prompt = """Create a finished soft hand-painted Soviet New Year postcard from the PERSON reference.
+Use Reference Image 2 as the exact target for brush texture, nostalgic printed-paper finish, winter palette,
+falling snow, Christmas tree and warm seasonal composition. Keep faces recognizable and anatomy natural.
+Do not copy the reference people's faces, text, lettering, watermark or dog. Do not add any animals, text, logos,
+watermarks or extra people.
+"""
+                elif style.id.startswith("postcard-"):
                     prompt = """Create a realistic professional New Year portrait from the PERSON reference.
 Use Reference Image 2 only for its seasonal palette, lighting, snow, decorations and composition. Render natural
 skin, real fabric and fur, believable anatomy, photographic detail and physically plausible light.
