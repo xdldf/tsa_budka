@@ -180,16 +180,13 @@ body { background: var(--ca-navy); color: var(--ca-white); font-family: "Century
   border: 0;
   border-radius: 0;
   box-shadow: none;
-  opacity: .62;
+  opacity: .48;
   background-color: transparent;
-  background-image:
-    radial-gradient(circle at 80% 76%, #5470ff55 0, #3555ff20 21%, transparent 48%),
-    url("/brand/pattern-forum-mark.png"),
-    url("/brand/pattern-secondary.png");
-  background-position: right bottom, right -100px bottom -115px, left -150px bottom -90px;
+  background-image: url("/brand/pattern-forum-mark.png");
+  background-position: right -100px bottom -115px;
   background-repeat: no-repeat;
-  background-size: min(80vw, 900px) min(100vh, 900px), min(68vw, 720px) auto, min(72vw, 780px) auto;
-  filter: drop-shadow(0 0 8px #526aff) drop-shadow(0 0 24px #304dff99) drop-shadow(0 0 60px #2640e866);
+  background-size: min(50vw, 560px) auto;
+  filter: drop-shadow(0 0 12px #526aff40);
   content: "";
   pointer-events: none;
 }
