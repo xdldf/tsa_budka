@@ -38,6 +38,7 @@ class Style(BaseModel):
     example_female: str | None = None       # culture: sample model photo in the female costume
     location_preview: str | None = None     # travel: 3:4 location preview for the style card
     style_reference_image: str | None = None
+    preview_image: str | None = None
     supports_double_strip: bool = True
 
 

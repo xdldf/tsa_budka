@@ -14,6 +14,7 @@ def style(
     outfits: dict[str, list[str]] | None = None,
     merch: str | None = None,
     reference: str | None = None,
+    preview: str | None = None,
 ) -> Style:
     return Style(
         id=id,
@@ -26,12 +27,13 @@ def style(
         outfit_images=outfits or {},
         merch_image=merch,
         style_reference_image=reference,
+        preview_image=preview or f"preview_{id}.png",
         supports_double_strip=strips,
     )
 
 
 STYLES: list[Style] = [
-    style("costume-male-summer", "Якутский костюм · мужской летний", "Традиционный летний образ", "#b98342", "Use only the clothing from the outfit reference. Dress every foreground person in this authentic Sakha men's summer costume and place them beside the Lena Pillars.", category="culture", backgrounds=["yakutia-lenskie-stolby-summer.jpg"], outfits={"male": ["yakut_male_no_hat.jpg"]}),
+    style("costume-male-summer", "Якутский костюм · мужской летний", "Традиционный летний образ", "#b98342", "Use only the clothing from the outfit reference. Dress every foreground person in this authentic Sakha men's summer costume and place them beside the Lena Pillars.", category="culture", backgrounds=["yakutia-lenskie-stolby-summer.jpg"], outfits={"male": ["yakut_male_no_hat.jpg"]}, preview="preview_costume-male-summer.png"),
     style("costume-male-winter", "Якутский костюм · мужской зимний", "Тёплый северный образ", "#6ba6d6", "Use only the clothing from the outfit reference. Dress every foreground person in this warm authentic Sakha men's winter costume and place them in winter Yakutia.", category="culture", backgrounds=["yakutia-lenskie-stolby.jpg"], outfits={"male": ["yakut_male_1.jpg"]}),
     style("costume-male-north", "Якутский костюм · мужской северный", "Суровый северный образ", "#506986", "Use only the clothing from the northern male outfit reference. Reproduce its fur-trimmed traditional northern costume, beadwork, long-hair details, boots and red leg coverings exactly. Create an authentic ceremonial northern Sakha men's portrait with a realistic Yakutian landscape.", category="culture", backgrounds=["yakutia-lenskie-stolby.jpg"], outfits={"male": ["yakut_north_male.jpg"]}),
     style("costume-male-botur", "Якутский костюм · Ботур", "Образ якутского богатыря", "#a65c39", "Use the Botur warrior outfit reference as the exact foundation. Reproduce the helmet, layered dark armor, shoulder guards, segmented chest and skirt armor, belt, olive undergarment and sword exactly as shown. Preserve exact identity, pose and anatomy; make it heroic, realistic and respectful.", category="culture", backgrounds=["yakutia-lenskie-stolby-summer.jpg"], outfits={"male": ["yakut_botur.jpg"]}),
