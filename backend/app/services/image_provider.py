@@ -832,7 +832,16 @@ Make the jewelry fit naturally and remain sharply visible. Do not add people, te
                     {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{reference_b64}"}},
                 )
             if style.style_reference_image:
-                prompt = """Create a strongly stylized, fully illustrated character poster from the PERSON reference.
+                if style.id.startswith("postcard-"):
+                    prompt = """Create a finished hand-painted New Year postcard from the PERSON reference.
+Use Reference Image 2 only for its painterly postcard technique, brush texture, palette, seasonal lighting and
+decorative composition. Keep the result warm, natural and print-like, with recognizable faces and realistic anatomy.
+Do not make it anime, manga, chibi, cel-shaded, 3D or cartoon. Do not copy the reference people's faces, text,
+watermarks, animals or exact poses. Preserve the people from Reference Image 1 as the only identities. Do not add
+text, logos, borders, watermarks, animals or extra people.
+"""
+                else:
+                    prompt = """Create a strongly stylized, fully illustrated character poster from the PERSON reference.
 The result must clearly look hand-drawn and graphic, not like a photograph with a light filter. Keep the same number
 of foreground people and preserve their recognizable identities, but render the entire image as polished key art.
 Reference Image 2 is a STYLE REFERENCE ONLY. Copy its illustration technique, line work, cel shading, color palette,
