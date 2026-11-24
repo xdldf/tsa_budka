@@ -185,9 +185,9 @@ body { background: var(--ca-navy); color: var(--ca-white); font-family: "Century
   background-image:
     url("/brand/pattern-primary.png"),
     url("/brand/pattern-secondary.png");
-  background-position: right -90px bottom -100px, left -120px bottom -70px;
+  background-position: right -120px bottom -120px, left -150px bottom -90px;
   background-repeat: no-repeat;
-  background-size: min(58vw, 620px) auto, min(62vw, 680px) auto;
+  background-size: min(68vw, 720px) auto, min(72vw, 780px) auto;
   content: "";
   pointer-events: none;
 }
