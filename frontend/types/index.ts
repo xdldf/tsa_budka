@@ -20,6 +20,7 @@ export interface Style {
   example_female?: string | null;
   location_preview?: string | null;
   style_reference_image?: string | null;
+  preview_image?: string | null;
   supports_double_strip: boolean;
 }
 
