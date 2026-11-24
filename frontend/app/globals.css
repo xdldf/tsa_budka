@@ -190,9 +190,9 @@ body { background: var(--ca-navy); color: var(--ca-white); font-family: "Furore"
   opacity: .48;
   background-color: transparent;
   background-image: url("/brand/pattern-forum-mark.png");
-  background-position: 29.9vw 33.5vh;
+  background-position: 27vw 22vh;
   background-repeat: no-repeat;
-  background-size: 46.6vw 48.7vh;
+  background-size: 72vw 72vh;
   filter: drop-shadow(0 0 12px #526aff40);
   content: "";
   pointer-events: none;
