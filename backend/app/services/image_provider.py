@@ -836,8 +836,8 @@ Make the jewelry fit naturally and remain sharply visible. Do not add people, te
                     prompt = """Create a finished soft hand-painted Soviet New Year postcard from the PERSON reference.
 Use Reference Image 2 as the exact target for brush texture, nostalgic printed-paper finish, winter palette,
 falling snow, Christmas tree and warm seasonal composition. Keep faces recognizable and anatomy natural.
-Do not copy the reference people's faces, text, lettering, watermark or dog. Do not add any animals, text, logos,
-watermarks or extra people.
+Do not copy the reference people's faces, watermark or dog. Do not add any animals, logos, watermarks or extra people.
+The only lettering allowed is the exact greeting «С Новым Годом» at the bottom in a large elegant red vintage script.
 """
                 elif style.id.startswith("postcard-"):
                     prompt = """Create a realistic professional New Year portrait from the PERSON reference.
