@@ -9,7 +9,7 @@ export const metadata = {
   appleWebApp: { capable: true, title: "Цифровой алмаз", statusBarStyle: "black-translucent" },
 };
 
-export const viewport = { themeColor: "#07111f" };
+export const viewport = { themeColor: "#061558" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return <html lang="ru"><body><Providers>{children}</Providers></body></html>;
