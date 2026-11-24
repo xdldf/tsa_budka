@@ -163,7 +163,7 @@ button:focus-visible { outline-color: #151515; }
   --ca-lime: #82bc34;
   --ca-magenta: #e5007e;
 }
-body { background: var(--ca-navy); color: var(--ca-white); font-family: "Century Gothic", "Trebuchet MS", Arial, sans-serif; }
+body { background: var(--ca-navy); color: var(--ca-white); font-family: "FUROR", "Century Gothic", "Trebuchet MS", Arial, sans-serif; }
 .booth-shell,
 .booth-shell.diamond-shell {
   isolation: isolate;
@@ -210,7 +210,7 @@ body { background: var(--ca-navy); color: var(--ca-white); font-family: "Century
 .action,
 .photo-choice-label,
 .capture-progress {
-  font-family: "Arial Black", "Trebuchet MS", sans-serif;
+  font-family: "FUROR", "Arial Black", "Trebuchet MS", sans-serif;
   font-weight: 900;
 }
 .kiosk-screen header h1 {
