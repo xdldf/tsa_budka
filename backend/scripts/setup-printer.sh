@@ -44,6 +44,10 @@ patch_ppd_geometry() {
     -e 's|^\*PageRegion w288h288/4x4:.*|\*PageRegion w288h288/4x4:\t"<</PageSize[288 288]/ImagingBBox null>>setpagedevice"|' \
     -e 's|^\*PaperDimension w288h288/4x4:.*|\*PaperDimension w288h288/4x4:\t"288 288"|' \
     -e 's|^\*ImageableArea w288h288/4x4:.*|\*ImageableArea w288h288/4x4:\t"0 0 288 288"|' \
+    -e 's|^\*PageSize w432h288/6x4:.*|\*PageSize w432h288/6x4:\t"<</PageSize[432 288]/ImagingBBox null>>setpagedevice"|' \
+    -e 's|^\*PageRegion w432h288/6x4:.*|\*PageRegion w432h288/6x4:\t"<</PageSize[432 288]/ImagingBBox null>>setpagedevice"|' \
+    -e 's|^\*PaperDimension w432h288/6x4:.*|\*PaperDimension w432h288/6x4:\t"432 288"|' \
+    -e 's|^\*ImageableArea w432h288/6x4:.*|\*ImageableArea w432h288/6x4:\t"0 0 432 288"|' \
     -e 's|^\*PageSize w288h432/4x6:.*|\*PageSize w288h432/4x6:\t"<</PageSize[288 432]/ImagingBBox null>>setpagedevice"|' \
     -e 's|^\*PageRegion w288h432/4x6:.*|\*PageRegion w288h432/4x6:\t"<</PageSize[288 432]/ImagingBBox null>>setpagedevice"|' \
     -e 's|^\*PaperDimension w288h432/4x6:.*|\*PaperDimension w288h432/4x6:\t"288 432"|' \
