@@ -28,7 +28,10 @@ class Settings(BaseSettings):
     nextcloud_folder: str = "driveephotos"
     nextcloud_public_url: str = ""      # e.g. https://cloud.example.com/public.php/dav/files/<share-token>
 
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
+    # The booth is normally launched from the repository root, while the
+    # deployment secrets live beside the backend.  Load that file first and
+    # keep .env as a convenient local override when running inside backend/.
+    model_config = SettingsConfigDict(env_file=("backend/.env", ".env"), env_file_encoding="utf-8", extra="ignore")
 
 
 settings = Settings()
