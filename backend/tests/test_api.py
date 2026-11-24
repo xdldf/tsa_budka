@@ -9,6 +9,7 @@ import app.main as main
 from app.main import app
 from app.models import Job, JobState, PhotoFormat
 from app.services.graphics import compose_double_strip, normalize_to_format
+from app.services.image_provider import IDENTITY_LOCK
 
 
 def request(method: str, path: str, **kwargs) -> httpx.Response:
@@ -25,6 +26,12 @@ def test_health_and_theme_catalog() -> None:
     assert len(styles) == 20
     assert {style["id"] for style in styles} >= {"costume-male-botur", "lena-pillars-winter", "anime", "postcard-soviet"}
     assert not next(style for style in styles if style["id"] == "postcard-soviet")["supports_double_strip"]
+
+
+def test_every_generation_uses_strict_identity_lock() -> None:
+    assert "Keep every foreground person's face unchanged" in IDENTITY_LOCK
+    assert "Do not beautify, idealize, age, de-age" in IDENTITY_LOCK
+    assert "same unchanged identity must be consistent in every frame" in IDENTITY_LOCK
 
 
 def test_rejects_non_image_capture() -> None:

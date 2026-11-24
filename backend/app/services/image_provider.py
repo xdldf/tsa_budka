@@ -19,6 +19,18 @@ SELFIE_EXAMPLES_DIR = Path(__file__).resolve().parent.parent / "assets" / "selfi
 
 MERCH_IMAGE = "merch.jpg"
 
+IDENTITY_LOCK = """
+
+MANDATORY FACE AND IDENTITY LOCK — HIGHEST PRIORITY
+The PERSON reference is the only source of identity. Keep every foreground person's face unchanged and immediately
+recognizable. Preserve the exact facial geometry, head shape, eyes, eyelids, eyebrows, nose, lips, jawline, cheeks,
+ears, skin tone, age, ethnicity, distinctive features and natural asymmetry. Do not beautify, idealize, age, de-age,
+swap, reconstruct or invent any face. Do not combine facial traits between people. Styling may change clothing,
+background, lighting, pose and artistic rendering only; it must not change who the person is or alter their facial
+features. If the output is illustrated or animated, retain the same facial proportions and distinctive features.
+For a multi-frame sheet, the same unchanged identity must be consistent in every frame.
+"""
+
 # ---------- Culture: all camera-facing people + per-gender outfit + ethnic background ----------
 PROMPT_CULTURE = """You are provided with the following reference images in this order:
 1. PERSON - the original camera photo of one or more people.
@@ -808,6 +820,10 @@ clean anatomy, natural hands and print-ready detail. Do not add text, logos, wat
 
         if style.prompt_template:
             prompt += f"\nLOCATION\n\n{style.prompt_template}\n"
+
+        # This invariant is appended to every provider branch and every style,
+        # so no theme-specific prompt can accidentally weaken face preservation.
+        prompt += IDENTITY_LOCK
 
         if six_frame_sheet:
             prompt += """
