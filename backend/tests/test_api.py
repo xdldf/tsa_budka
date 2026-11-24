@@ -68,6 +68,8 @@ def test_reference_assets_exist_for_reference_driven_styles() -> None:
         for filenames in style.outfit_images.values():
             for filename in filenames:
                 assert (main.OUTFITS_DIR / filename).is_file()
+        if style.style_reference_image:
+            assert (main.STYLE_REFERENCES_DIR / style.style_reference_image).is_file()
 
 
 def test_format_normalization_and_six_photo_composition(tmp_path: Path) -> None:

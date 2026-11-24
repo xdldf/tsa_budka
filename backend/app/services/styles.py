@@ -13,6 +13,7 @@ def style(
     backgrounds: list[str] | None = None,
     outfits: dict[str, list[str]] | None = None,
     merch: str | None = None,
+    reference: str | None = None,
 ) -> Style:
     return Style(
         id=id,
@@ -24,6 +25,7 @@ def style(
         background_images=backgrounds or [],
         outfit_images=outfits or {},
         merch_image=merch,
+        style_reference_image=reference,
         supports_double_strip=strips,
     )
 
@@ -44,7 +46,7 @@ STYLES: list[Style] = [
     style("frozen-face", "Замерзшее лицо", "Морозный арт-эффект", "#9ccfe1", "Create a photorealistic extreme-Yakutian-frost portrait: delicate frost crystals on eyebrows and hair, visible breath and icy light. Preserve exact identity and keep the face natural."),
     style("trend-surprise", "Сюрприз", "Неожиданный трендовый образ", "#b58ae8", "Create a surprising, fashionable and playful premium portrait with a current social-media visual trend. Preserve exact identity, natural anatomy and no text."),
     style("anime", "Аниме", "Яркий аниме-портрет", "#ef7ca6", "Render the person as a high-end anime protagonist while preserving exact identity and recognizable facial structure. Use cinematic anime key-art quality."),
-    style("gta", "GTA", "Игровой постер в духе GTA", "#f2964a", "Create a stylized open-world crime-game poster portrait inspired by sunny urban action games. Preserve exact identity. No logos, no game title and no text."),
+    style("gta", "GTA", "Игровой постер в духе GTA", "#f2964a", "Create a polished GTA-like loading-screen illustration matching Reference Image 2: clean confident ink outlines, angular semi-realistic faces, smooth cel shading, crisp graphic highlights, saturated peach-pink-purple sunset, palm silhouettes and a coastal modern-city atmosphere. Use a dramatic waist-up hero composition and fashionable contemporary clothing. Keep the mood stylish and cinematic, without violence, guns, logos, game titles or text.", reference="gta-style.png"),
     style("cyberpunk", "Киберпанк", "Неон и технологии", "#8b5cf6", "Create an Arctic cyberpunk portrait at night with frosted neon, holographic interfaces and a futuristic Yakutsk skyline. Preserve exact identity."),
     style("postcard-soviet", "Открытка НГ · советская", "Новогодняя ретро-открытка", "#cf4f4f", "Create a warm Soviet-era New Year postcard portrait with nostalgic illustration style, fir branches, snow and festive atmosphere. Preserve the person. No text.", strips=False),
     style("postcard-dopamine", "Открытка НГ · дофаминовая", "Яркая праздничная открытка", "#f5b83d", "Create a bright joyful dopamine-style New Year postcard portrait: vivid colors, playful ornaments, snow and festive happiness. Preserve the person. No text.", strips=False),

@@ -16,6 +16,7 @@ BACKGROUNDS_DIR = Path(__file__).resolve().parent.parent / "assets" / "backgroun
 OUTFITS_DIR = Path(__file__).resolve().parent.parent / "assets" / "outfits"
 MERCH_DIR = Path(__file__).resolve().parent.parent / "assets" / "merch"
 SELFIE_EXAMPLES_DIR = Path(__file__).resolve().parent.parent / "assets" / "selfie-examples"
+STYLE_REFERENCES_DIR = Path(__file__).resolve().parent.parent / "assets" / "style-references"
 
 MERCH_IMAGE = "merch.jpg"
 
@@ -812,11 +813,25 @@ class OpenRouterImageProvider(ImageProvider):
             input_references = [
                 {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{person_b64}"}},
             ]
+            if style.style_reference_image:
+                reference_path = STYLE_REFERENCES_DIR / style.style_reference_image
+                if not reference_path.is_file():
+                    raise RuntimeError(f"Style reference not found: {reference_path}")
+                reference_b64 = await asyncio.to_thread(to_b64, reference_path)
+                input_references.append(
+                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{reference_b64}"}},
+                )
             prompt = """Create a premium event portrait from the PERSON reference.
 Preserve every foreground person's identity, face, age, skin tone, expression and recognizable features exactly.
 Keep the same number of foreground people. Remove background bystanders. Apply the requested visual theme to clothing,
 lighting and environment while keeping faces realistic and immediately recognizable. Use polished editorial composition,
 clean anatomy, natural hands and print-ready detail. Do not add text, logos, watermarks, borders or extra people."""
+            if style.style_reference_image:
+                prompt += """
+Reference Image 2 is a STYLE REFERENCE ONLY. Copy its illustration technique, line work, cel shading, color palette,
+sunset lighting, character rendering and cinematic composition. Do not copy its people, faces, weapons, tattoos,
+clothing or exact scene. The people from Reference Image 1 must remain the only identities in the result.
+"""
 
         if style.prompt_template:
             prompt += f"\nLOCATION\n\n{style.prompt_template}\n"

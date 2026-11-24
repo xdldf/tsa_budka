@@ -6,7 +6,9 @@ import type { Gender, Style } from "@/types";
 
 export function StyleCard({ style, gender, selected, onSelect }: { style: Style; gender?: Gender; selected: boolean; onSelect: () => void }) {
   let previewUrl: string | null = null;
-  if (style.category === "culture") {
+  if (style.style_reference_image) {
+    previewUrl = api.imageUrl(`/static/style-references/${style.style_reference_image}`);
+  } else if (style.category === "culture") {
     const outfits = (style.outfit_images[gender ?? ""] ?? Object.values(style.outfit_images)[0]) ?? [];
     previewUrl = outfits.length > 0 ? api.imageUrl(`/static/outfits/${outfits[0]}`) : null;
   } else if (style.location_preview) {

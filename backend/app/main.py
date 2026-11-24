@@ -11,7 +11,7 @@ from app.core.booth_config import booth_config
 from app.core.config import settings
 from app.models import CaptureResponse, GenerateRequest, JobResponse, PhotoFormat, PrintRequest, ShareResponse
 from app.services import JobManager, StorageService, build_print_service, build_provider, build_share_service
-from app.services.image_provider import BACKGROUNDS_DIR, OUTFITS_DIR
+from app.services.image_provider import BACKGROUNDS_DIR, OUTFITS_DIR, STYLE_REFERENCES_DIR
 from app.services.styles import STYLES
 
 storage = StorageService(settings.storage_dir)
@@ -30,6 +30,7 @@ app = FastAPI(title=settings.app_name, lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=settings.cors_origins, allow_methods=["*"], allow_headers=["*"])
 app.mount("/static/backgrounds", StaticFiles(directory=BACKGROUNDS_DIR), name="backgrounds")
 app.mount("/static/outfits", StaticFiles(directory=OUTFITS_DIR), name="outfits")
+app.mount("/static/style-references", StaticFiles(directory=STYLE_REFERENCES_DIR), name="style-references")
 
 
 @app.get("/health")
