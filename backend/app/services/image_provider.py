@@ -821,17 +821,26 @@ class OpenRouterImageProvider(ImageProvider):
                 input_references.append(
                     {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{reference_b64}"}},
                 )
-            prompt = """Create a premium event portrait from the PERSON reference.
+            if style.style_reference_image:
+                prompt = """Create a strongly stylized, fully illustrated character poster from the PERSON reference.
+The result must clearly look hand-drawn and graphic, not like a photograph with a light filter. Keep the same number
+of foreground people and preserve their recognizable identities, but render the entire image as polished key art.
+Reference Image 2 is a STYLE REFERENCE ONLY. Copy its illustration technique, line work, cel shading, color palette,
+sunset lighting, character rendering and cinematic composition very closely. Use clearly visible dark ink contours
+around the face, jaw, nose, eyes, hair, clothing and body silhouette. Build forms from clean angular color planes,
+hard-edged shadows, crisp rim light and bold graphic highlights. Simplify skin and fabric into deliberate painted
+shapes while retaining the person's defining facial proportions and features. Avoid photographic skin texture,
+soft airbrushing, shallow-depth-of-field photography and photorealistic rendering. Every element, including the
+background, must share the same illustrated loading-screen aesthetic. Do not copy the reference's people, faces,
+weapons, tattoos, clothing or exact scene. The people from Reference Image 1 must remain the only identities.
+Do not add text, logos, borders, watermarks or extra people.
+"""
+            else:
+                prompt = """Create a premium event portrait from the PERSON reference.
 Preserve every foreground person's identity, face, age, skin tone, expression and recognizable features exactly.
 Keep the same number of foreground people. Remove background bystanders. Apply the requested visual theme to clothing,
 lighting and environment while keeping faces realistic and immediately recognizable. Use polished editorial composition,
 clean anatomy, natural hands and print-ready detail. Do not add text, logos, watermarks, borders or extra people."""
-            if style.style_reference_image:
-                prompt += """
-Reference Image 2 is a STYLE REFERENCE ONLY. Copy its illustration technique, line work, cel shading, color palette,
-sunset lighting, character rendering and cinematic composition. Do not copy its people, faces, weapons, tattoos,
-clothing or exact scene. The people from Reference Image 1 must remain the only identities in the result.
-"""
 
         if style.prompt_template:
             prompt += f"\nLOCATION\n\n{style.prompt_template}\n"
