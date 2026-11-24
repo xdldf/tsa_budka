@@ -806,18 +806,29 @@ Make the jewelry fit naturally and remain sharply visible. Do not add people, te
             print(f"[BOOTH] culture refs person+{n_outfits}outfits+{'bg' if background_path else 'textbg'}", flush=True)
         elif style.category == "travel":
             bg_path = self._pick(style, None)
-            merch_path = self._merch(style)
-            person_b64, bg_b64, merch_b64 = await asyncio.gather(
+            person_b64, bg_b64 = await asyncio.gather(
                 asyncio.to_thread(to_b64, source),
                 asyncio.to_thread(to_b64, bg_path),
-                asyncio.to_thread(to_b64, merch_path),
             )
-            prompt = PROMPT_SELFIE_NO_FILTER
-            input_references = [
-                {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{person_b64}"}},
-                {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{bg_b64}"}},
-                {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{merch_b64}"}},
-            ]
+            if style.id == "lena-pillars-winter":
+                prompt = """Create a realistic winter portrait from the PERSON reference at the Lena Pillars in winter.
+Preserve the person's exact identity, natural pose and anatomy. Dress them in an ordinary warm winter jacket with
+no logos, no branded merchandise and no reference jacket. Use only the BACKGROUND reference for the Lena Pillars
+location. Do not create a selfie pose, selfie arm or smartphone perspective. Do not add text or extra people.
+"""
+                input_references = [
+                    {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{person_b64}"}},
+                    {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{bg_b64}"}},
+                ]
+            else:
+                merch_path = self._merch(style)
+                merch_b64 = await asyncio.to_thread(to_b64, merch_path)
+                prompt = PROMPT_SELFIE_NO_FILTER
+                input_references = [
+                    {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{person_b64}"}},
+                    {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{bg_b64}"}},
+                    {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{merch_b64}"}},
+                ]
         else:
             person_b64 = await asyncio.to_thread(to_b64, source)
             input_references = [
@@ -832,7 +843,14 @@ Make the jewelry fit naturally and remain sharply visible. Do not add people, te
                     {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{reference_b64}"}},
                 )
             if style.style_reference_image:
-                if style.id == "postcard-soviet":
+                if style.id == "fashion":
+                    prompt = """Create a realistic high-fashion editorial portrait from the PERSON reference.
+Use Reference Image 2 only for its avant-garde mirrored geometry, sculptural silver couture, dramatic studio light
+and composition. Add authentic Yakut/Sakha geometric ornament and silver jewelry details to the garment. Keep real
+skin, natural anatomy, photographic materials and the person's exact identity. Do not make it anime, animated,
+cartoon, 3D, painted or illustrated. Do not copy the reference model's face, text, logos or watermark.
+"""
+                elif style.id == "postcard-soviet":
                     prompt = """Create a finished soft hand-painted Soviet New Year postcard from the PERSON reference.
 Use Reference Image 2 as the exact target for brush texture, nostalgic printed-paper finish, winter palette,
 falling snow, Christmas tree and warm seasonal composition. Keep faces recognizable and anatomy natural.
