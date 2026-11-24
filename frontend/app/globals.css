@@ -202,10 +202,17 @@ body { background: var(--ca-navy); color: var(--ca-white); font-family: "Furore"
   top: 18px;
   left: 24px;
   z-index: 19;
-  width: 238px;
-  height: 62px;
-  background: url("/brand/logo-horizontal-white.png") left center / contain no-repeat;
-  content: "";
+  width: 330px;
+  height: 80px;
+  background: url("/brand/logo-mark-white.png") left center / 80px auto no-repeat;
+  padding: 7px 0 0 96px;
+  color: var(--ca-white);
+  content: "ФЕДЕРАЛЬНЫЙ ФОРУМ\AЦИФРОВОЙ АЛМАЗ\AЯКУТСК 2026";
+  font-family: "Furore", sans-serif;
+  font-size: 11px;
+  line-height: 1.38;
+  letter-spacing: .01em;
+  white-space: pre;
   pointer-events: none;
 }
 .kiosk-screen,
