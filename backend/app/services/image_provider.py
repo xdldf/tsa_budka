@@ -889,6 +889,16 @@ clean anatomy, natural hands and print-ready detail. Do not add text, logos, wat
         if style.prompt_template:
             prompt += f"\nLOCATION\n\n{style.prompt_template}\n"
 
+        if aspect_ratio == "1:1":
+            prompt += """
+
+SQUARE PRINT FRAMING
+Compose the image as a comfortably framed square print, with the camera pulled back.
+Keep the complete head, shoulders, torso and any visible clothing or accessories inside the frame.
+Leave a clear 8 percent safety margin on every edge; do not crop hair, elbows, hands, clothing or scenery.
+Do not use a tight close-up or zoomed-in portrait.
+"""
+
         # This invariant is appended to every provider branch and every style,
         # so no theme-specific prompt can accidentally weaken face preservation.
         prompt += IDENTITY_LOCK
