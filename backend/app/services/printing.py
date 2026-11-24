@@ -40,7 +40,18 @@ class LPPrintService(PrintService):
         original at 1:1, edge-to-edge, with no white border.
         """
         overscan = self.config.borderless_overscan
-        if overscan <= 0:
+        if overscan < 0:
+            # Negative values intentionally add a white safety frame around
+            # the photo.  This keeps every pixel inside the printable area
+            # when the driver trims an unpredictable borderless edge.
+            margin = 1.0 + overscan
+            if margin <= 0:
+                return page
+            content = page.resize((round(page.width * margin), round(page.height * margin)), Image.LANCZOS)
+            canvas = Image.new("RGB", page.size, "white")
+            canvas.paste(content, ((page.width - content.width) // 2, (page.height - content.height) // 2))
+            return canvas
+        if overscan == 0:
             return page
         page_w, page_h = page.size
         f = 1.0 + overscan
