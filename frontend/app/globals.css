@@ -180,13 +180,14 @@ body { background: var(--ca-navy); color: var(--ca-white); font-family: "Century
   border: 0;
   border-radius: 0;
   box-shadow: none;
-  opacity: .92;
+  opacity: .28;
   background-color: transparent;
   background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='720' height='720' viewBox='0 0 720 720'%3E%3Cg fill='none' stroke='%23364ced' stroke-width='34' stroke-linecap='square' stroke-linejoin='bevel'%3E%3Cpath d='M-60 110h165l55 55h105l-52 52H120L34 131'/%3E%3Cpath d='M565-42v148l-56 56v111l53-53V126l81-81'/%3E%3Cpath d='M690 510H545l-62 62H376l55 55h106l78-78'/%3E%3Cpath d='M35 645v-92l70-70h108l-54 54h-40l-33 33v75'/%3E%3C/g%3E%3Cg fill='%23009fe3' opacity='.38'%3E%3Crect x='285' y='74' width='9' height='9' transform='rotate(45 289 78)'/%3E%3Crect x='318' y='106' width='6' height='6' transform='rotate(45 321 109)'/%3E%3Crect x='650' y='340' width='8' height='8' transform='rotate(45 654 344)'/%3E%3C/g%3E%3C/svg%3E"),
-    linear-gradient(135deg, transparent 0 48%, #364ced12 48% 49%, transparent 49% 100%);
-  background-position: center, 0 0;
-  background-size: min(100vw, 900px) min(100vw, 900px), 96px 96px;
+    url("/brand/pattern-primary.png"),
+    url("/brand/pattern-secondary.png");
+  background-position: right -90px bottom -100px, left -120px bottom -70px;
+  background-repeat: no-repeat;
+  background-size: min(58vw, 620px) auto, min(62vw, 680px) auto;
   content: "";
   pointer-events: none;
 }
@@ -195,18 +196,10 @@ body { background: var(--ca-navy); color: var(--ca-white); font-family: "Century
   top: 18px;
   left: 24px;
   z-index: 19;
-  max-width: 230px;
-  border-left: 10px solid var(--ca-blue);
-  padding: 1px 0 2px 12px;
-  color: var(--ca-white);
-  content: "ФЕДЕРАЛЬНЫЙ ФОРУМ\AЦИФРОВОЙ АЛМАЗ\AЯКУТСК 2026";
-  font-family: "Arial Black", "Trebuchet MS", sans-serif;
-  font-size: 10px;
-  font-weight: 900;
-  line-height: 1.05;
-  letter-spacing: .04em;
-  text-align: left;
-  white-space: pre;
+  width: 238px;
+  height: 62px;
+  background: url("/brand/logo-horizontal-white.png") left center / contain no-repeat;
+  content: "";
   pointer-events: none;
 }
 .kiosk-screen,

@@ -16,3 +16,4 @@ data/
 tsconfig.tsbuildinfo
 .openclaude/worktrees/
 output/
+tmp/
