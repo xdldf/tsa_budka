@@ -833,10 +833,10 @@ Make the jewelry fit naturally and remain sharply visible. Do not add people, te
                 )
             if style.style_reference_image:
                 if style.id.startswith("postcard-"):
-                    prompt = """Create a finished hand-painted New Year postcard from the PERSON reference.
-Use Reference Image 2 only for its painterly postcard technique, brush texture, palette, seasonal lighting and
-decorative composition. Keep the result warm, natural and print-like, with recognizable faces and realistic anatomy.
-Do not make it anime, manga, chibi, cel-shaded, 3D or cartoon. Do not copy the reference people's faces, text,
+                    prompt = """Create a realistic professional New Year portrait from the PERSON reference.
+Use Reference Image 2 only for its seasonal palette, lighting, snow, decorations and composition. Render natural
+skin, real fabric and fur, believable anatomy, photographic detail and physically plausible light.
+Do not make it anime, manga, chibi, cel-shaded, 3D, cartoon, painted or illustrated. Do not copy the reference people's faces, text,
 watermarks, animals or exact poses. Preserve the people from Reference Image 1 as the only identities. Do not add
 text, logos, borders, watermarks, animals or extra people.
 """
