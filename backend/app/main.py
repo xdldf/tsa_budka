@@ -9,9 +9,9 @@ from fastapi.staticfiles import StaticFiles
 
 from app.core.booth_config import booth_config
 from app.core.config import settings
-from app.models import CaptureResponse, GenerateRequest, JobResponse, PrintRequest, ShareResponse
+from app.models import CaptureResponse, GenerateRequest, JobResponse, PhotoFormat, PrintRequest, ShareResponse
 from app.services import JobManager, StorageService, build_print_service, build_provider, build_share_service
-from app.services.image_provider import BACKGROUNDS_DIR
+from app.services.image_provider import BACKGROUNDS_DIR, OUTFITS_DIR
 from app.services.styles import STYLES
 
 storage = StorageService(settings.storage_dir)
@@ -29,6 +29,7 @@ async def lifespan(_: FastAPI):
 app = FastAPI(title=settings.app_name, lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=settings.cors_origins, allow_methods=["*"], allow_headers=["*"])
 app.mount("/static/backgrounds", StaticFiles(directory=BACKGROUNDS_DIR), name="backgrounds")
+app.mount("/static/outfits", StaticFiles(directory=OUTFITS_DIR), name="outfits")
 
 
 @app.get("/health")
@@ -72,13 +73,16 @@ async def image(image_id: UUID):
 
 @app.post("/generate", response_model=JobResponse)
 async def generate(payload: GenerateRequest) -> JobResponse:
-    expected = 6 if payload.photo_format == "double_strip" else 1
+    expected = 1
     if len(payload.image_ids) != expected:
         raise HTTPException(422, f"Format {payload.photo_format} requires {expected} photo(s)")
     if any(not storage.path_for(image_id) for image_id in payload.image_ids):
         raise HTTPException(404, "Image not found")
     if not any(style.id == payload.style_id for style in STYLES):
         raise HTTPException(404, "Style not found")
+    style = next(style for style in STYLES if style.id == payload.style_id)
+    if payload.photo_format == PhotoFormat.DOUBLE_STRIP and not style.supports_double_strip:
+        raise HTTPException(422, "Double photo strip is not available for this style")
     return jobs.response(jobs.start_generation(payload.image_ids, payload.style_id, payload.photo_format))
 
 

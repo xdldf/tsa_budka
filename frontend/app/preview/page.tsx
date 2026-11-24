@@ -13,7 +13,7 @@ export default function PreviewPage() {
   const [submitting, setSubmitting] = useState(false);
   const [previewUrl, setPreviewUrl] = useState("");
   const lock = useRef(false);
-  const total = photoFormat === "double_strip" ? 6 : 1;
+  const total = 1;
   const photo = photos.at(-1);
   useEffect(() => { if (!style || !photoFormat || !photo) router.replace(style ? "/camera" : "/"); }, [photo, photoFormat, router, style]);
   useEffect(() => { if (!photo) return; const url = URL.createObjectURL(photo); setPreviewUrl(url); return () => URL.revokeObjectURL(url); }, [photo]);

@@ -37,6 +37,7 @@ class Style(BaseModel):
     example_male: str | None = None         # culture: sample model photo in the male costume
     example_female: str | None = None       # culture: sample model photo in the female costume
     location_preview: str | None = None     # travel: 3:4 location preview for the style card
+    supports_double_strip: bool = True
 
 
 class CaptureResponse(BaseModel):

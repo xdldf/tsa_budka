@@ -679,19 +679,28 @@ The final image should be indistinguishable from a real high-end smartphone trav
 
 
 class ImageProvider:
-    async def generate(self, source: Path, style: Style, output: Path, aspect_ratio: str = "2:3") -> None:
+    async def generate(self, source: Path, style: Style, output: Path, aspect_ratio: str = "2:3", *, six_frame_sheet: bool = False) -> None:
         raise NotImplementedError
 
 
 
 class DemoImageProvider(ImageProvider):
-    async def generate(self, source: Path, style: Style, output: Path, aspect_ratio: str = "2:3") -> None:
+    async def generate(self, source: Path, style: Style, output: Path, aspect_ratio: str = "2:3", *, six_frame_sheet: bool = False) -> None:
         def render() -> None:
             with Image.open(source) as image:
                 image = image.convert("RGB")
                 image = ImageEnhance.Color(image).enhance(1.25)
                 image = ImageEnhance.Contrast(image).enhance(1.12)
-                image.filter(ImageFilter.GaussianBlur(radius=0.15)).save(output, quality=94)
+                image = image.filter(ImageFilter.GaussianBlur(radius=0.15))
+                if six_frame_sheet:
+                    cell = image.resize((600, 600), Image.LANCZOS)
+                    sheet = Image.new("RGB", (1200, 1800), "white")
+                    for index in range(6):
+                        column, row = divmod(index, 3)
+                        sheet.paste(cell, (column * 600, row * 600))
+                    sheet.save(output, "PNG", dpi=(300, 300))
+                else:
+                    image.save(output, quality=94)
         await asyncio.to_thread(render)
 
 
@@ -745,7 +754,7 @@ class OpenRouterImageProvider(ImageProvider):
             raise RuntimeError(f"Merch image not found: {path}")
         return path
 
-    async def generate(self, source: Path, style: Style, output: Path, aspect_ratio: str = "2:3") -> None:
+    async def generate(self, source: Path, style: Style, output: Path, aspect_ratio: str = "2:3", *, six_frame_sheet: bool = False) -> None:
         if not self.settings.openrouter_api_key:
             raise RuntimeError("OPENROUTER_API_KEY is not configured")
 
@@ -799,6 +808,19 @@ clean anatomy, natural hands and print-ready detail. Do not add text, logos, wat
 
         if style.prompt_template:
             prompt += f"\nLOCATION\n\n{style.prompt_template}\n"
+
+        if six_frame_sheet:
+            prompt += """
+
+OUTPUT LAYOUT — FOLLOW EXACTLY
+Create ONE finished vertical 2:3 print sheet from the single person reference in ONE generation.
+The sheet must contain exactly SIX distinct square photos arranged edge-to-edge in a precise 2-column by 3-row grid.
+Generate a different natural pose, expression, crop or camera angle in every cell while preserving the exact same
+person, identity, face, clothing theme and visual style in all six cells. Each cell must look like a separate photo,
+not a crop of one larger scene. Fill the entire canvas. Use no gaps, margins, frames, captions, logos or text.
+Keep every face safely inside its square cell. The vertical division must be exactly centered so the sheet can be
+cut into two equal photo strips, each containing three square photos.
+"""
 
         config = load_booth_config()
         payload = {

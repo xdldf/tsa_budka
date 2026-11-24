@@ -4,9 +4,12 @@ import { PhotoChoice } from "@/components/photo-choice";
 import { api } from "@/services/api";
 import type { Gender, Style } from "@/types";
 
-export function StyleCard({ style, gender: _gender, selected, onSelect }: { style: Style; gender?: Gender; selected: boolean; onSelect: () => void }) {
+export function StyleCard({ style, gender, selected, onSelect }: { style: Style; gender?: Gender; selected: boolean; onSelect: () => void }) {
   let previewUrl: string | null = null;
-  if (style.location_preview) {
+  if (style.category === "culture") {
+    const outfits = (style.outfit_images[gender ?? ""] ?? Object.values(style.outfit_images)[0]) ?? [];
+    previewUrl = outfits.length > 0 ? api.imageUrl(`/static/outfits/${outfits[0]}`) : null;
+  } else if (style.location_preview) {
     previewUrl = api.imageUrl(style.location_preview);
   } else if (style.background_images.length > 0) {
     previewUrl = api.imageUrl(`/static/backgrounds/${style.background_images[0]}`);

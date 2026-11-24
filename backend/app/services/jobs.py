@@ -9,7 +9,7 @@ from uuid import UUID, uuid4
 
 from app.core.config import Settings
 from app.models import Job, JobResponse, JobState, PhotoFormat
-from app.services.graphics import compose_double_strip, normalize_to_format
+from app.services.graphics import normalize_to_format
 from app.services.image_provider import ImageProvider
 from app.services.storage import StorageService
 from app.services.styles import get_style
@@ -66,18 +66,12 @@ class JobManager:
             try:
                 result_id = uuid4()
                 output = self.storage.root / f"{result_id}.png"
-                aspect = "1:1" if job.photo_format in {PhotoFormat.SQUARE, PhotoFormat.DOUBLE_STRIP} else "2:3"
-                generated: list[Path] = []
-                for index, source in enumerate(sources):
-                    assert source is not None
-                    target = output if len(sources) == 1 else self.storage.root / f"{result_id}_{index}.png"
-                    await self.provider.generate(source, style, target, aspect)
-                    normalize_to_format(target, job.photo_format)
-                    generated.append(target)
-                if job.photo_format == PhotoFormat.DOUBLE_STRIP:
-                    compose_double_strip(generated, output)
-                    for target in generated:
-                        target.unlink(missing_ok=True)
+                is_six_frame_sheet = job.photo_format == PhotoFormat.DOUBLE_STRIP
+                aspect = "1:1" if job.photo_format == PhotoFormat.SQUARE else "2:3"
+                source = sources[0]
+                assert source is not None
+                await self.provider.generate(source, style, output, aspect, six_frame_sheet=is_six_frame_sheet)
+                normalize_to_format(output, PhotoFormat.PORTRAIT if is_six_frame_sheet else job.photo_format)
                 if self.events[job.id].is_set():
                     output.unlink(missing_ok=True)
                     job.state, job.message = JobState.CANCELLED, "Обработка отменена / Processing cancelled"

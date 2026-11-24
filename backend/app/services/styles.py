@@ -1,13 +1,54 @@
 from app.models import Style
 
 
+def style(
+    id: str,
+    name: str,
+    description: str,
+    color: str,
+    prompt: str,
+    *,
+    strips: bool = True,
+    category: str = "theme",
+    backgrounds: list[str] | None = None,
+    outfits: dict[str, list[str]] | None = None,
+    merch: str | None = None,
+) -> Style:
+    return Style(
+        id=id,
+        name=name,
+        description=description,
+        preview_color=color,
+        category=category,
+        prompt_template=prompt,
+        background_images=backgrounds or [],
+        outfit_images=outfits or {},
+        merch_image=merch,
+        supports_double_strip=strips,
+    )
+
+
 STYLES: list[Style] = [
-    Style(id="digital-diamond", name="Цифровой алмаз", description="Кристаллы, свет и цифровая Якутия", preview_color="#22d3ee", category="theme", prompt_template="Transform the scene into a futuristic Digital Diamond forum portrait: luminous faceted diamond crystals, icy cyan and violet light, subtle data particles, premium technology-conference atmosphere, elegant black and silver fashion. Keep it sophisticated and photorealistic."),
-    Style(id="yakutia-lena-pillars", name="Якутия — Ленские столбы", description="Легендарный пейзаж в современном стиле", preview_color="#f59e0b", category="theme", background_images=["yakutia-lenskie-stolby.jpg"], prompt_template="Place the people at the Lena Pillars in Yakutia above the Lena river, in dramatic golden-hour light. Add subtle Sakha-inspired geometric details to modern winter clothing. The result is a premium contemporary Yakutia travel portrait, not a postcard and without text."),
-    Style(id="sakha-anime", name="Sakha Anime", description="Герой аниме из будущего Якутии", preview_color="#fb7185", category="theme", prompt_template="Render the people as high-end anime protagonists while preserving exact identity and recognizable facial structure. Set the scene in a futuristic winter Yakutsk with aurora light, crisp cel shading, expressive but non-chibi proportions, elegant Sakha ornament accents and cinematic anime key art quality."),
-    Style(id="arctic-cyberpunk", name="Арктический киберпанк", description="Неон, мороз и технологии", preview_color="#8b5cf6", category="theme", prompt_template="Create an Arctic cyberpunk portrait at night: frosted neon, holographic interfaces, warm technical outerwear, icy breath and a futuristic Yakutsk skyline. Preserve faces photorealistically, use cyan-magenta lighting, premium cinematic detail and no text."),
-    Style(id="pixel-yakutsk", name="Pixel Yakutsk", description="Будто вы внутри игры", preview_color="#34d399", category="theme", prompt_template="Turn the environment and clothing into a playful premium 16-bit video-game world inspired by winter Yakutsk, while keeping each face clearly recognizable as a polished pixel-art portrait. Use crisp pixels, bright arcade colors, snowy city details and dynamic game-character posing, without UI or text."),
-    Style(id="mammoth-party", name="Мамонт на тусовке", description="Смешной кадр с якутским мамонтом", preview_color="#f97316", category="theme", prompt_template="Create a funny but polished party portrait in Yakutia with one friendly fluffy woolly mammoth joining the group like a celebrity guest. Preserve every real person's identity and count. Use joyful expressions, warm festival lights, tasteful winter fashion, realistic photography and playful energy without text."),
+    style("costume-male-summer", "Якутский костюм · мужской летний", "Традиционный летний образ", "#b98342", "Use only the clothing from the outfit reference. Dress every foreground person in this authentic Sakha men's summer costume and place them beside the Lena Pillars.", category="culture", backgrounds=["yakutia-lenskie-stolby-summer.jpg"], outfits={"male": ["yakut_male_no_hat.jpg"]}),
+    style("costume-male-winter", "Якутский костюм · мужской зимний", "Тёплый северный образ", "#6ba6d6", "Use only the clothing from the outfit reference. Dress every foreground person in this warm authentic Sakha men's winter costume and place them in winter Yakutia.", category="culture", backgrounds=["yakutia-lenskie-stolby.jpg"], outfits={"male": ["yakut_male_1.jpg"]}),
+    style("costume-male-north", "Якутский костюм · мужской северный", "Суровый северный образ", "#506986", "Use only the clothing from the outfit reference. Create an authentic ceremonial northern Sakha men's portrait with a realistic Yakutian landscape.", category="culture", backgrounds=["yakutia-lenskie-stolby.jpg"], outfits={"male": ["yakut_male_2.jpg"]}),
+    style("costume-male-botur", "Якутский костюм · Ботур", "Образ якутского богатыря", "#a65c39", "Use the outfit reference as the exact foundation and transform the foreground person into a noble Sakha Botur warrior. Preserve exact identity; make it heroic, realistic and respectful.", category="culture", backgrounds=["yakutia-lenskie-stolby-summer.jpg"], outfits={"male": ["yakut_male_1.jpg", "yakut_male_2.jpg"]}),
+    style("costume-female-summer", "Якутский костюм · женский летний", "Лёгкий традиционный образ", "#e08fa8", "Use only the clothing from the outfit reference. Dress every foreground person in this authentic Sakha women's summer costume and place them beside the Lena Pillars.", category="culture", backgrounds=["yakutia-lenskie-stolby-summer.jpg"], outfits={"female": ["yakut_female_1.jpg"]}),
+    style("costume-female-winter", "Якутский костюм · женский зимний", "Тёплый зимний образ", "#b9d8ec", "Use only the clothing from the outfit reference. Dress every foreground person in this warm authentic Sakha women's winter costume in winter Yakutia.", category="culture", backgrounds=["yakutia-lenskie-stolby.jpg"], outfits={"female": ["yakut_female_2.jpg"]}),
+    style("costume-female-north", "Якутский костюм · женский северный", "Северная церемония", "#7b93b1", "Use only the clothing from the outfit reference. Create an authentic ceremonial northern Sakha women's portrait with a calm northern atmosphere.", category="culture", backgrounds=["yakutia-lenskie-stolby.jpg"], outfits={"female": ["yakut_female_3.jpg"]}),
+    style("costume-female-jewelry", "Якутский костюм · украшения", "Традиционные серебряные украшения", "#c7c9d6", "Use the outfit reference as the exact foundation and emphasize its authentic Sakha silver jewelry. Preserve exact identity and natural face.", category="culture", backgrounds=["yakutia-lenskie-stolby-summer.jpg"], outfits={"female": ["yakut_female_1.jpg", "yakut_female_2.jpg", "yakut_female_3.jpg"]}),
+    style("lena-pillars-winter", "Ленские столбы · зима", "Зимняя Якутия", "#8cb8db", "The location is the Lena Pillars in winter Yakutia. Every foreground person wears the exact warm winter jacket from the merchandise reference.", category="travel", backgrounds=["yakutia-lenskie-stolby.jpg"], merch="merch_yakutia.jpg"),
+    style("bulus-summer", "Булус · лето", "Ледник посреди лета", "#64c9d2", "Place the person at Bulus glacier in Yakutia in summer. Show the remarkable ice, green summer landscape and natural premium travel photography."),
+    style("khandyga", "Хандыга", "Посёлок у северной реки", "#c28c55", "Place the person in Khandyga, Yakutia with a believable local northern riverside setting, cinematic natural light and premium travel portrait quality."),
+    style("fashion", "Мода", "Современная fashion-съёмка", "#d99b8f", "Create a high-fashion editorial portrait with bold contemporary styling, studio lighting and premium magazine photography. Preserve exact identity."),
+    style("frozen-face", "Замерзшее лицо", "Морозный арт-эффект", "#9ccfe1", "Create a photorealistic extreme-Yakutian-frost portrait: delicate frost crystals on eyebrows and hair, visible breath and icy light. Preserve exact identity and keep the face natural."),
+    style("trend-surprise", "Сюрприз", "Неожиданный трендовый образ", "#b58ae8", "Create a surprising, fashionable and playful premium portrait with a current social-media visual trend. Preserve exact identity, natural anatomy and no text."),
+    style("anime", "Аниме", "Яркий аниме-портрет", "#ef7ca6", "Render the person as a high-end anime protagonist while preserving exact identity and recognizable facial structure. Use cinematic anime key-art quality."),
+    style("gta", "GTA", "Игровой постер в духе GTA", "#f2964a", "Create a stylized open-world crime-game poster portrait inspired by sunny urban action games. Preserve exact identity. No logos, no game title and no text."),
+    style("cyberpunk", "Киберпанк", "Неон и технологии", "#8b5cf6", "Create an Arctic cyberpunk portrait at night with frosted neon, holographic interfaces and a futuristic Yakutsk skyline. Preserve exact identity."),
+    style("postcard-soviet", "Открытка НГ · советская", "Новогодняя ретро-открытка", "#cf4f4f", "Create a warm Soviet-era New Year postcard portrait with nostalgic illustration style, fir branches, snow and festive atmosphere. Preserve the person. No text.", strips=False),
+    style("postcard-dopamine", "Открытка НГ · дофаминовая", "Яркая праздничная открытка", "#f5b83d", "Create a bright joyful dopamine-style New Year postcard portrait: vivid colors, playful ornaments, snow and festive happiness. Preserve the person. No text.", strips=False),
+    style("postcard-ca", "Открытка НГ · ЦА", "Новогодняя открытка", "#5f9ea0", "Create a premium festive New Year postcard portrait with winter magic, elegant holiday decor and a warm celebratory mood. Preserve the person. No text.", strips=False),
 ]
 
 

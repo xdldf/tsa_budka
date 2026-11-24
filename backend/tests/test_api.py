@@ -22,8 +22,9 @@ def request(method: str, path: str, **kwargs) -> httpx.Response:
 def test_health_and_theme_catalog() -> None:
     assert request("GET", "/health").json() == {"status": "ok"}
     styles = request("GET", "/styles").json()
-    assert len(styles) == 6
-    assert {style["id"] for style in styles} >= {"digital-diamond", "sakha-anime", "mammoth-party"}
+    assert len(styles) == 20
+    assert {style["id"] for style in styles} >= {"costume-male-botur", "lena-pillars-winter", "anime", "postcard-soviet"}
+    assert not next(style for style in styles if style["id"] == "postcard-soviet")["supports_double_strip"]
 
 
 def test_rejects_non_image_capture() -> None:
@@ -31,12 +32,35 @@ def test_rejects_non_image_capture() -> None:
     assert response.status_code == 415
 
 
-def test_generate_enforces_photo_count() -> None:
+def test_double_strip_accepts_one_source_photo() -> None:
     response = request("POST", "/generate", json={
         "image_ids": [str(uuid4())], "style_id": "digital-diamond", "photo_format": "double_strip",
     })
-    assert response.status_code == 422
-    assert "requires 6" in response.json()["detail"]
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Image not found"
+
+
+def test_postcard_rejects_double_strip_with_real_source() -> None:
+    image_id = uuid4()
+    source = main.storage.root / f"{image_id}.jpg"
+    Image.new("RGB", (32, 32), "white").save(source)
+    try:
+        response = request("POST", "/generate", json={
+            "image_ids": [str(image_id)], "style_id": "postcard-soviet", "photo_format": "double_strip",
+        })
+        assert response.status_code == 422
+        assert response.json()["detail"] == "Double photo strip is not available for this style"
+    finally:
+        source.unlink(missing_ok=True)
+
+
+def test_reference_assets_exist_for_reference_driven_styles() -> None:
+    for style in main.STYLES:
+        for filename in style.background_images:
+            assert (main.BACKGROUNDS_DIR / filename).is_file()
+        for filenames in style.outfit_images.values():
+            for filename in filenames:
+                assert (main.OUTFITS_DIR / filename).is_file()
 
 
 def test_format_normalization_and_six_photo_composition(tmp_path: Path) -> None:
