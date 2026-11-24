@@ -55,12 +55,23 @@ def normalize_to_paper(image_path: Path) -> None:
 
 
 def normalize_to_format(image_path: Path, photo_format: str) -> None:
-    """Normalize one generated image for the selected event print format."""
+    """Normalize one generated image for the selected event print format.
+
+    Square prints use a contain operation so the complete generated frame is
+    retained.  The provider may return a portrait frame even when a square was
+    requested; center-cropping that frame loses the top and bottom of the
+    person.  A clean white matte fills the unused part of the square instead.
+    """
     target = (1200, 1200) if photo_format in {"square", "double_strip"} else (1200, 1800)
     with Image.open(image_path) as source:
         image = source.convert("RGB")
         target_ratio = target[0] / target[1]
-        if image.width / image.height > target_ratio:
+        if photo_format == "square":
+            image.thumbnail(target, Image.LANCZOS)
+            canvas = Image.new("RGB", target, "white")
+            canvas.paste(image, ((target[0] - image.width) // 2, (target[1] - image.height) // 2))
+            image = canvas
+        elif image.width / image.height > target_ratio:
             width = round(image.height * target_ratio)
             left = (image.width - width) // 2
             image = image.crop((left, 0, left + width, image.height))
