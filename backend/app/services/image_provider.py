@@ -795,6 +795,14 @@ class OpenRouterImageProvider(ImageProvider):
                 for b in rest
             ]
             prompt = PROMPT_CULTURE
+            if style.id == "costume-female-jewelry":
+                prompt = """You are provided with a PERSON reference and a JEWELRY reference.
+Preserve the person's identity, face, hair, clothing, body, pose, framing and background exactly.
+Add ONLY the authentic Sakha silver jewelry visible in the JEWELRY reference: the forehead ornament,
+long side earrings, chest necklace and layered silver pendants. The jewelry reference defines accessories
+only; do not copy its red dress, fur coat, hood, lighting or scenery. Do not change any garment or add a costume.
+Make the jewelry fit naturally and remain sharply visible. Do not add people, text, logos or watermarks.
+"""
             print(f"[BOOTH] culture refs person+{n_outfits}outfits+{'bg' if background_path else 'textbg'}", flush=True)
         elif style.category == "travel":
             bg_path = self._pick(style, None)
